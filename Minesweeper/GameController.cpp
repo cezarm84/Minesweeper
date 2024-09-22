@@ -26,13 +26,13 @@ void GameController::startGame(int mode) {
         game = new Minesweeper(width, height, mines); // Create the game on heap
         gameOver = false;
 
-        // Game loop until the game is over
+        // Game loop until the game over
         while (!game->isGameOver()) {
             game->displayGrid();
             handleUserInput();
         }
 
-        // Game has ended, reveal all mines and display final state
+        // Game over, reveal all mines and display final state
         game->revealAllMines();
         game->displayGrid();
 
