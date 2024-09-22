@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="main.cpp" />

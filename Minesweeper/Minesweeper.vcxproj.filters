@@ -24,9 +24,6 @@
     <ClCompile Include="FileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Minsweeper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
