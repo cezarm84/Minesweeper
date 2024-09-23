@@ -18,10 +18,15 @@ void GameController::startGame(int mode) {
             height = 6;
             mines = 5;
         }
-        else { // Hard Mode
+        else if(mode == 2) { // Hard Mode
             width = 26;
             height = 10;
             mines = 30;
+        }
+        else {
+            std::cout << "Please chosse 1 or 2.\n";
+            std::cin >>mode;
+            continue;
         }
 
         game = new Minesweeper(width, height, mines); // Create the game on heap
@@ -132,8 +137,3 @@ void GameController::handleUserInput() {
         }
     }
 }
-
-
-
-
-

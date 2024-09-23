@@ -9,9 +9,10 @@ int main() {
     int choice;
 
     std::cout << "Welcome to Minesweeper!\n";
-    std::cout << "Select difficulty:\n";
+    std::cout << "Select an option:\n";
     std::cout << "1. Easy\n";
     std::cout << "2. Hard\n";
+   
     std::cin >> choice;
 
     controller.startGame(choice);  // Start the game with the selected mode
