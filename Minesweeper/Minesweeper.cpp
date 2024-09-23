@@ -1,4 +1,5 @@
 #include "Minesweeper.hpp"
+#include "Style.hpp"
 #include <iostream>
 #include <random>
 #include <ctime>
@@ -78,7 +79,7 @@ void Minesweeper::displayGrid() const {
             int index = row * gridWidth + col;
             if (grid[index].isRevealed) {
                 if (grid[index].isMine) {
-                    std::cout << "M ";  // Display a mine
+                    std::cout << MINE_SYMBOL;   // Display a mine
                 }
                 else if (grid[index].adjacentMines > 0) {
                     std::cout << grid[index].adjacentMines << ' ';  // number of adjacent mines
@@ -88,7 +89,7 @@ void Minesweeper::displayGrid() const {
                 }
             }
             else {
-                std::cout << (grid[index].isFlagged ? 'F' : '*') << ' ';  // Display flag or unrevealed cell
+                std::cout << (grid[index].isFlagged ? FLAG_SYMBOL : UNREVEALED_CELL) << ' ';  // Display flag or unrevealed cell
             }
         }
         std::cout << '\n';

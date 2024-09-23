@@ -137,6 +137,7 @@
     <ClInclude Include="FileHandler.hpp" />
     <ClInclude Include="GameController.hpp" />
     <ClInclude Include="Minesweeper.hpp" />
+    <ClInclude Include="Style.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

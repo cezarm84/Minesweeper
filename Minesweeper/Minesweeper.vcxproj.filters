@@ -41,5 +41,8 @@
     <ClInclude Include="Cell.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Style.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
