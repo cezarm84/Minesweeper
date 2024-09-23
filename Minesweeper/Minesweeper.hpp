@@ -15,7 +15,7 @@ private:
     bool winner;
 
     // Private functions
-    void initializeGrid();
+    // void initializeGrid();
     void placeMines();
     void calculateMines();
     int  countMines(int index);
@@ -23,16 +23,23 @@ private:
  
 
 public:
-    Minesweeper(int width, int height, int mines);  // Constructor to initialize the game board
-    void reveal(int row, int colIndex);  // Method to reveal a cell
-    void flag(int row, int colIndex);    // Method to flag/unflag a cell
-    bool checkWin();        // Check if the player has won
-    void displayGrid();              // Display the grid
-    int getGridHeight() const;       // Return the height of the grid
-    int getGridWidth() const;        // Return the width of the grid
-    bool isGameOver() const;         // Check if the game is over
-    void revealAllMines();           // Reveal all mines on the grid
-    bool isWin() const;
-};
+    Minesweeper(int width, int height, int mines);  // Constructor
+    void reveal(int row, int colIndex);   // Reveal a cell
+    void flag(int row, int colIndex);     // Flag/unflag a cell
+    bool checkWin() const;                 // Check for win
+    void displayGrid() const;              // Display the grid
+    int getGridHeight() const;             // Get grid height
+    int getGridWidth() const;              // Get grid width
+    bool isGameOver() const;               // Check if game is over
+    void revealAllMines();                 // Reveal all mines
+    bool isWin() const;                    // Check if player has won
+    int getRemainingMines() const;         // Get remaining mines
+    void setRemainingMines(int mines);     // setter
+    void initializeGrid(int width, int height);;                  // Initialize grid for loading
+    Cell& getCell(int row, int col);       // Access a specific cell
+    const std::vector<Cell>& getGrid() const;
+
+};  
+
 
 #endif 

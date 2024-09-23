@@ -7,15 +7,19 @@
 Minesweeper::Minesweeper(int width, int height, int mines)
     : gridWidth(width), gridHeight(height), mineCount(mines), totalCells(width* height),
     gameOver(false), winner(false) {
-    initializeGrid();
+    initializeGrid( width,height);
     placeMines();
     calculateMines();
 }
 
-void Minesweeper::initializeGrid() {
+void Minesweeper::initializeGrid(int width, int height) {
+    gridWidth = width;
+    gridHeight = height;
+    totalCells = width * height;
     grid = std::vector<Cell>(totalCells);
-    remainingMines = mineCount;
+    remainingMines = mineCount; // Make sure to set the correct number of remaining mines if necessary
 }
+
 
 // Places mines random
 void Minesweeper::placeMines() {
@@ -59,7 +63,7 @@ int Minesweeper::countMines(int index) {
     return count;
 }
 
-void Minesweeper::displayGrid() {
+void Minesweeper::displayGrid() const {
     std::cout << "Remaining Mines: " << remainingMines << "\n\n";
 
     std::cout << "    "; // column labels
@@ -152,7 +156,7 @@ void Minesweeper::flag(int row, int colIndex) {
     grid[index].isFlagged = !grid[index].isFlagged;
     remainingMines += grid[index].isFlagged ? -1 : 1;
 }
-bool Minesweeper::checkWin() {
+bool Minesweeper::checkWin() const {
     for (const Cell& cell : grid) {
         // If a non-mine cell is not revealed,  no win
         if (!cell.isMine && !cell.isRevealed) {
@@ -171,6 +175,11 @@ int Minesweeper::getGridWidth() const {
     return gridWidth; // Return the width of the grid
 }
 
+int Minesweeper::getRemainingMines() const {
+    return remainingMines;;
+}
+
+
 
 bool Minesweeper::isGameOver() const {
     return gameOver;
@@ -187,4 +196,13 @@ void Minesweeper::revealAllMines() {
 
 bool Minesweeper::isWin() const {
     return winner;
+}
+Cell& Minesweeper::getCell(int row, int col) {
+    return grid[row * gridWidth + col];
+}
+const std::vector<Cell>& Minesweeper::getGrid() const {
+    return grid; 
+}
+void Minesweeper::setRemainingMines(int mines) {
+    remainingMines = mines;
 }
