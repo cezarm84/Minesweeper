@@ -12,20 +12,64 @@ void GameController::startGame(int mode) {
     bool playAgain = true;
 
     while (playAgain) {
+        // Check if the mode is for loading a game
+        if (mode == 3) {
+            game = new Minesweeper(6, 6, 5);// create a grid to initiliaze the load 
+            std::string saveDirectory = "C:\\Users\\cezar\\source\\repos\\Minesweeper\\Minesweeper"; // directory where save files are located
+            std::vector<std::string> saveFiles = FileHandler::listSaveFiles(saveDirectory);
+
+            if (saveFiles.empty()) {
+                std::cout << "No saved games available to load.\n";
+                continue; // Go back to the start to select difficulty or load again
+            }
+            else {
+                std::cout << "Available saved games:\n";
+                for (size_t i = 0; i < saveFiles.size(); ++i) {
+                    std::cout << i + 1 << ". " << saveFiles[i] << "\n";
+                }
+                int fileChoice;
+                std::cout << "Enter the number of the file you want to load: ";
+                std::cin >> fileChoice;
+
+                if (fileChoice > 0 && fileChoice <= saveFiles.size()) {
+                    std::string filename = saveFiles[fileChoice - 1];
+                    FileHandler::loadGame(*game, filename); // Load the game 
+
+                    // Display the loaded game 
+                    std::cout << "Game loaded from " << filename << "\n";
+                    game->displayGrid(); // Display the loaded game's grid
+
+                    // Start the game loop with the loaded game
+                    gameOver = false; // Reset game over status if needed
+
+                    // Game loop until the game over
+                    while (!game->isGameOver()) {
+                        handleUserInput(); // Handle user input
+                        game->displayGrid(); // Display the updated grid after user input
+                    }
+                }
+                else {
+                    std::cout << "Invalid choice.\n";
+                }
+
+                continue; // Go back to the start to select difficulty or load again
+            }
+        }
+
         // Set game parameters based on difficulty mode
         if (mode == 1) { // Easy Mode
             width = 6;
             height = 6;
             mines = 5;
         }
-        else if(mode == 2) { // Hard Mode
+        else if (mode == 2) { // Hard Mode
             width = 26;
             height = 10;
             mines = 30;
         }
         else {
-            std::cout << "Please chosse 1 or 2.\n";
-            std::cin >>mode;
+            std::cout << "Please choose 1, 2, or 3.\n"; // Include load game option
+            std::cin >> mode;
             continue;
         }
 
@@ -33,11 +77,16 @@ void GameController::startGame(int mode) {
         gameOver = false;
 
         // Game loop until the game over
-        while (!game->isGameOver()) {
-            game->displayGrid();
-            handleUserInput();
-        }
+        while(!game->isGameOver()) {
+            game->displayGrid();       // Display the current game state
+            handleUserInput();         // Handle user input
 
+            // Check for exit 
+            if (gameOver) {
+                return; // Exit the function immediately 
+
+            }
+        }
         // Game over, reveal all mines and display final state
         game->revealAllMines();
         game->displayGrid();
@@ -48,20 +97,19 @@ void GameController::startGame(int mode) {
         else {
             std::cout << "Game Over! You hit a mine.\n";
         }
-        
 
         delete game; // Free memory when the game ends
 
         // for play again
         char choice;
-        std::cout << " do u like to play again? (y/n): ";
+        std::cout << "Would you like to play again? (y/n): ";
         std::cin >> choice;
         if (std::tolower(choice) != 'y') {
             playAgain = false; // Exit the loop if no
         }
         else {
-            std::cout << "Select difficulty:\n1. Easy\n2. Hard\n";
-            std::cin >> mode; //  choose difficulty again
+            std::cout << "Select difficulty:\n1. Easy\n2. Hard\n3. Load Game\n"; // Include load option
+            std::cin >> mode; // Choose difficulty or load option again
         }
     }
 }
@@ -69,71 +117,90 @@ void GameController::startGame(int mode) {
 
 // Handles user input for actions
 void GameController::handleUserInput() {
-    char action; // Action chosen by the player (reveal, flag, save, load)
-    int row;     // Row chosen by the player
-    char col;    // Column chosen by the player
+    char action;
+    int row;
+    char col;
+    bool validAction = false;
 
-    bool validAction = false; // Check if input action is valid
-
-    // Loop until a valid action
     while (!validAction) {
-        // Prompt for action
-        std::cout << "Enter action (R for reveal, F for flag/unflag, S for save, L for load): ";
-        std::cin >> action; // Read the action
+        std::cout << "Enter action (R for reveal, F for flag/unflag, S for save, L for load, E for exit): ";
+        std::cin >> action;
 
-        // Check for valid action
-        if (action == 'R' || action == 'r' || action == 'F' || action == 'f' || action == 'S' || action == 's' || action == 'L' || action == 'l') {
-            validAction = true; // Set to true if the action is valid
+        if (action == 'R' || action == 'r' || action == 'F' || action == 'f' || action == 'S' || action == 's' ||
+            action == 'L' || action == 'l' || action == 'E' || action == 'e') {
+            validAction = true;
         }
         else {
-            std::cout << "Please enter 'R', 'F', 'S', or 'L'.\n";
-            std::cin.clear();   // Clear the error flag on cin
-            std::cin.ignore(1000, '\n'); // Discard invalid input from the buffer
+            std::cout << "Please enter 'R', 'F', 'S', 'L', or 'E'.\n";
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
         }
     }
 
     if (action == 'S' || action == 's') {
-        // Save the game
         std::string filename;
-        std::cout << "Enter filename to save: ";
+        std::cout << "Enter filename: ";
         std::cin >> filename;
-        FileHandler::saveGame(*game, filename); // Use FileHandler to save the game
+        filename += ".sav"; // add the .sav extension
+        FileHandler::saveGame(*game, filename);
     }
     else if (action == 'L' || action == 'l') {
-        // Load the game
-        std::string filename;
-        std::cout << "Enter filename to load: ";
-        std::cin >> filename;
-        FileHandler::loadGame(*game, filename); // Use FileHandler to load the game
+        std::string saveDirectory = "C:\\Users\\cezar\\source\\repos\\Minesweeper\\Minesweeper"; // directory where save files are located
+        std::vector<std::string> saveFiles = FileHandler::listSaveFiles(saveDirectory); 
+
+        if (saveFiles.empty()) {
+            std::cout << "No saved games available to load.\n";
+        }
+        else {
+            std::cout << "Available saved games:\n";
+            for (size_t i = 0; i < saveFiles.size(); ++i) {
+                std::cout << i + 1 << ". " << saveFiles[i] << "\n";
+            }
+            int fileChoice;
+            std::cout << "Enter the number of the file you want to load: ";
+            std::cin >> fileChoice;
+
+            if (fileChoice > 0 && fileChoice <= saveFiles.size()) {
+                std::string filename = saveFiles[fileChoice - 1];
+                FileHandler::loadGame(*game, filename);
+            }
+            else {
+                std::cout << "Invalid choice.\n";
+            }
+        }
+    }
+    else if (action == 'E' || action == 'e') {
+        std::cout << "Exiting the game\n";
+        gameOver = true;
+        return;
+        
     }
     else {
-        // Handle regular actions (reveal/flag)
-        bool validCoordinates = false; // Check if input coordinates are valid
+        bool validCoordinates = false;
 
-        // Loop until valid coordinates are entered
         while (!validCoordinates) {
-            // Prompt for the row and column
             std::cout << "Enter row (0-" << (game->getGridHeight() - 1) << ") and column (a-"
                 << (char)('a' + game->getGridWidth() - 1) << "): ";
-            std::cin >> row >> col; // Read the row and column
+            std::cin >> row >> col;
 
-            int colIndex = std::tolower(col) - 'a'; // Convert column letter to index
+            int colIndex = std::tolower(col) - 'a';
 
-            // Validate coordinates
             if (row >= 0 && row < game->getGridHeight() && colIndex >= 0 && colIndex < game->getGridWidth()) {
-                validCoordinates = true; // Set to true if the coordinates are valid
+                validCoordinates = true;
                 if (action == 'R' || action == 'r') {
-                    game->reveal(row, colIndex); // Reveal the cell
+                    game->reveal(row, colIndex);
                 }
                 else if (action == 'F' || action == 'f') {
-                    game->flag(row, colIndex); // Flag or unflag the cell
+                    game->flag(row, colIndex);
                 }
             }
             else {
                 std::cout << "Invalid coordinates. Please try again.\n";
-                std::cin.clear();   // Clear the error flag on cin
-                std::cin.ignore(1000, '\n'); // Discard invalid input from the buffer
+                std::cin.clear();
+                std::cin.ignore(1000, '\n');
             }
         }
     }
 }
+
+

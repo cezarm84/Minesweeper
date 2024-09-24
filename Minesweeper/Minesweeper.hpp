@@ -23,6 +23,7 @@ private:
  
 
 public:
+    
     Minesweeper(int width, int height, int mines);  // Constructor
     void reveal(int row, int colIndex);   // Reveal a cell
     void flag(int row, int colIndex);     // Flag/unflag a cell
@@ -35,7 +36,7 @@ public:
     bool isWin() const;                    // Check if player has won
     int getRemainingMines() const;         // Get remaining mines
     void setRemainingMines(int mines);     // setter
-    void initializeGrid(int width, int height);;                  // Initialize grid for loading
+    void initializeGrid(int width, int height); // Initialize grid for loading
     Cell& getCell(int row, int col);       // Access a specific cell
     const std::vector<Cell>& getGrid() const;
 

@@ -18,7 +18,7 @@ void Minesweeper::initializeGrid(int width, int height) {
     gridHeight = height;
     totalCells = width * height;
     grid = std::vector<Cell>(totalCells);
-    remainingMines = mineCount; // Make sure to set the correct number of remaining mines if necessary
+    remainingMines = mineCount; 
 }
 
 

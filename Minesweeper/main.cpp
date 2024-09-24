@@ -5,17 +5,18 @@
 #include <iostream>
 
 int main() {
-    GameController controller;
+    GameController gameController; // Create a GameController instance
     int choice;
 
     std::cout << "Welcome to Minesweeper!\n";
     std::cout << "Select an option:\n";
     std::cout << "1. Easy\n";
     std::cout << "2. Hard\n";
-   
+    std::cout << "3. Load Game\n";
     std::cin >> choice;
 
-    controller.startGame(choice);  // Start the game with the selected mode
+    // Start the game based on user choice
+    gameController.startGame(choice);
 
-    return 0;
+    return 0; // End of the program
 }
