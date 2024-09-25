@@ -25,7 +25,7 @@ void GameController::startGame(int mode) {
                 std::cin >> mode;
 
                 if (std::cin.fail()) {
-                    std::cin.clear(); // Clear the error flag
+                    std::cin.clear(); // Clear the error
                     std::cin.ignore(1000, '\n'); // Ignore invalid input
                     std::cout << "Please enter a valid number (1, 2, or 3).\n";
                 }
