@@ -35,17 +35,12 @@ void GameController::startGame(int mode) {
                     std::string filename = saveFiles[fileChoice - 1];
                     FileHandler::loadGame(*game, filename); // Load the game 
 
-                    // Display the loaded game 
-                   // std::cout << "Game loaded from " << filename << "\n";
-                    game->displayGrid(); // Display the loaded game's grid
-
                     // Start the game loop with the loaded game
                     gameOver = false; // Reset game over status if needed
                     
-                   
-                    
                     // Game loop until the game over
                     while (!game->isGameOver()) {
+                        game->displayGrid();
                         handleUserInput();         
                         if (gameOver) {
                             return; // Exit the function
