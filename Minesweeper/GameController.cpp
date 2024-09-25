@@ -12,7 +12,29 @@ void GameController::startGame(int mode) {
     bool playAgain = true;
 
     while (playAgain) {
-        // Check if the mode is for loading a game
+
+        bool validInput = false;
+
+        //  valid input is received for difficulty or load game selection
+        while (!validInput) {
+            if (mode == 1 || mode == 2 || mode == 3) {
+                validInput = true;
+            }
+            else {
+                
+                std::cin >> mode;
+
+                if (std::cin.fail()) {
+                    std::cin.clear(); // Clear the error flag
+                    std::cin.ignore(1000, '\n'); // Ignore invalid input
+                    std::cout << "Please enter a valid number (1, 2, or 3).\n";
+                }
+                else if (mode < 1 || mode > 3) {
+                    std::cout << "Please choose 1, 2, or 3.\n";
+                }
+            }
+        }
+        
         if (mode == 3) {
             game = new Minesweeper(6, 6, 5);// create a game for the load function at game start
             std::string saveDirectory = "C:\\Users\\cezar\\source\\repos\\Minesweeper\\Minesweeper"; // directory where save files 
@@ -41,7 +63,8 @@ void GameController::startGame(int mode) {
                     // Game loop until the game over
                     while (!game->isGameOver()) {
                         game->displayGrid();
-                        handleUserInput();         
+                        handleUserInput();  
+                        // Check for exit 
                         if (gameOver) {
                             return; // Exit the function
                         }
@@ -51,11 +74,23 @@ void GameController::startGame(int mode) {
                     }
                     else {
                         std::cout << "Game Over! You hit a mine.\n";
-
+                        
                     }
                     // Game over, reveal all mines and display final state
                     game->revealAllMines();
                     game->displayGrid();
+
+                    char choice;
+                    std::cout << "Would you like to play again? (y/n): ";
+                    std::cin >> choice;
+                    if (std::tolower(choice) != 'y') {
+                        playAgain = false; // Exit the loop if no
+                    }
+                    else {
+                        std::cout << "Select difficulty:\n1. Easy\n2. Hard\n3. Load Game\n"; // Include load option
+                        std::cin >> mode; // Choose difficulty or load option again
+
+                    }
                     
                 }
                 else {
@@ -77,11 +112,7 @@ void GameController::startGame(int mode) {
             height = 10;
             mines = 30;
         }
-        else {
-            std::cout << "Please choose 1, 2, or 3.\n"; 
-            std::cin >> mode;
-            continue;
-        }
+       
 
         game = new Minesweeper(width, height, mines); // Create the game on heap
         gameOver = false;
