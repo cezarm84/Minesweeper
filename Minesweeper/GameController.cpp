@@ -14,8 +14,8 @@ void GameController::startGame(int mode) {
     while (playAgain) {
         // Check if the mode is for loading a game
         if (mode == 3) {
-            game = new Minesweeper(6, 6, 5);// create a grid to initiliaze the load 
-            std::string saveDirectory = "C:\\Users\\cezar\\source\\repos\\Minesweeper\\Minesweeper"; // directory where save files are located
+            game = new Minesweeper(6, 6, 5);// create a game for the load function at game start
+            std::string saveDirectory = "C:\\Users\\cezar\\source\\repos\\Minesweeper\\Minesweeper"; // directory where save files 
             std::vector<std::string> saveFiles = FileHandler::listSaveFiles(saveDirectory);
 
             if (saveFiles.empty()) {
@@ -36,17 +36,32 @@ void GameController::startGame(int mode) {
                     FileHandler::loadGame(*game, filename); // Load the game 
 
                     // Display the loaded game 
-                    std::cout << "Game loaded from " << filename << "\n";
+                   // std::cout << "Game loaded from " << filename << "\n";
                     game->displayGrid(); // Display the loaded game's grid
 
                     // Start the game loop with the loaded game
                     gameOver = false; // Reset game over status if needed
-
+                    
+                   
+                    
                     // Game loop until the game over
                     while (!game->isGameOver()) {
-                        handleUserInput(); // Handle user input
-                        game->displayGrid(); // Display the updated grid after user input
+                        handleUserInput();         
+                        if (gameOver) {
+                            return; // Exit the function
+                        }
                     }
+                    if (game->isWin()) {
+                        std::cout << "Congratulations! You've won the game!\n";
+                    }
+                    else {
+                        std::cout << "Game Over! You hit a mine.\n";
+
+                    }
+                    // Game over, reveal all mines and display final state
+                    game->revealAllMines();
+                    game->displayGrid();
+                    
                 }
                 else {
                     std::cout << "Invalid choice.\n";
@@ -68,7 +83,7 @@ void GameController::startGame(int mode) {
             mines = 30;
         }
         else {
-            std::cout << "Please choose 1, 2, or 3.\n"; // Include load game option
+            std::cout << "Please choose 1, 2, or 3.\n"; 
             std::cin >> mode;
             continue;
         }
@@ -83,10 +98,10 @@ void GameController::startGame(int mode) {
 
             // Check for exit 
             if (gameOver) {
-                return; // Exit the function immediately 
-
+                return; // Exit the function
             }
         }
+
         // Game over, reveal all mines and display final state
         game->revealAllMines();
         game->displayGrid();

@@ -5,7 +5,7 @@
 #include <iostream>
 
 int main() {
-    GameController gameController; // Create a GameController instance
+    GameController gameController; // Create a GameController 
     int choice;
 
     std::cout << "Welcome to Minesweeper!\n";

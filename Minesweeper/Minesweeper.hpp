@@ -3,7 +3,7 @@
 #include <vector>
 #include "Cell.hpp"
 
-// The Minesweeper class manages the game board and  functionality
+// The Minesweeper class manage the game board and  functionality
 class Minesweeper {
 private:
     std::vector<Cell> grid;      // The grid of cells
